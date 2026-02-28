@@ -1,31 +1,62 @@
 
-3️⃣ File Organizer Script
+#!/bin/bash
 
-Objective: Create a script that organizes files in a directory.
+# Ask user for directory
+echo "Enter directory to organize"
+read dir
 
-Requirements: 
+#  Check if directory exists
 
-1. Ask user for a directory.
+if [ ! -d "$dir" ]; then
+        echo "Directory does not exist. Creating it..."
+        mkdir -p "$dir"
+fi
 
-2. Move:
+# Create folders inside that directory
 
-   * `.jpg` → images folder
-   * `.txt` → documents folder
-   * `.log` → logs folder
+mkdir -p "$dir/images_folder"
+mkdir -p "$dir/documents_folder"
+mkdir -p "$dir/logs_folder"
 
-3. If folder doesn’t exist:
+# Count number of moved files
 
-   * Create it automatically
+jpg_count=0
+txt_count=0
+log_count=0
 
-4. Count how many files were moved
+# Move jgp files
 
-5. Print summary at the end
+for file in "$dir"/*.jpg
+do
+        if [ -f "$file" ]; then
+                mv "$file" "$dir/images_folder/"
+                ((jpg_count++))
+        fi
+done
 
+# Move txt files
 
-Skills Tested: 
+for file in "$dir"/*.txt
+do
+        if [ -f "$file" ]; then
+                mv "$file" "$dir/documents_folder/"
+                ((txt_count++))
+        fi
+done
 
-* `for` loop
-* Pattern matching (`*.jpg`)
-* `mkdir -p`
-* `mv`
-* Conditional checks
+# Move log files
+
+for file in "$dir"/*.log
+do
+        if [ -f "$file" ]; then
+                mv "$file" "$dir/logs_folder/"
+                ((log_count++))
+        fi
+done
+
+# Summary
+
+echo "Organisation of files complete"
+echo "$jpg_count .jpg files moved"
+echo "$txt_count .txt files moved"
+echo "$log_count .log files moved"
